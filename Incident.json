@@ -1,0 +1,38 @@
+{
+    "1001": {
+        "name": 1001,
+        "title": "Suspicious Login",
+        "type": "Unauthorized Access",
+        "severity": "High",
+        "status": "Progress",
+        "reporter": "Hamid",
+        "description": "Login detected from an unknown location."
+    },
+    "1002": {
+        "name": 1002,
+        "title": "Suspicious Login",
+        "type": "Unauthorized Access",
+        "severity": "High",
+        "status": "Open",
+        "reporter": "Hamid",
+        "description": "Login detected from an unknown location."
+    },
+    "1003": {
+        "name": 1003,
+        "title": "phishing",
+        "type": "Access",
+        "severity": "low",
+        "status": "colse",
+        "reporter": "ali",
+        "description": "login low ....."
+    },
+    "1005": {
+        "name": 1005,
+        "title": "typing",
+        "type": "other",
+        "severity": "low",
+        "status": "open",
+        "reporter": "ali",
+        "description": "writing..."
+    }
+}
