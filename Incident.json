@@ -26,13 +26,13 @@
         "reporter": "ali",
         "description": "login low ....."
     },
-    "1005": {
-        "name": 1005,
-        "title": "typing",
-        "type": "other",
+    "1006": {
+        "name": 1006,
+        "title": "testing defensi",
+        "type": "Unauthorized Access",
         "severity": "low",
         "status": "open",
-        "reporter": "ali",
-        "description": "writing..."
+        "reporter": "hamid",
+        "description": "Unauthorized Access is low posishen"
     }
 }
