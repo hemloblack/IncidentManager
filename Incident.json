@@ -13,7 +13,7 @@
         "title": "Suspicious Login",
         "type": "Unauthorized Access",
         "severity": "High",
-        "status": "Open",
+        "status": "In Progress",
         "reporter": "Hamid",
         "description": "Login detected from an unknown location."
     },

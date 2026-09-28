@@ -41,10 +41,19 @@ class incident_manager:
     
    
     def show_all_incidents(self):
-        return self.data_file
+        print("--------- Show All Incidents ---------")
+        if not self.data_file:
+            print("There is no incident.")
+            return
+        print(f"\n{len(self.data_file)} incident(s):\n")
+        for inc_id, inc_data in self.data_file.items():
+            print(f"ID: {inc_id}")
+            print(json.dumps(inc_data, indent=4, ensure_ascii=False))
+            print("-" * 40)
+         
         
     
-    def search(self,field, value):#با کمک دیپ سیک
+    def search(self,field, value):
         """
         field: 'type' یا 'severity' یا 'status' یا 'id'
         value: مقداری که می‌خوای فیلتر کنی
@@ -52,12 +61,12 @@ class incident_manager:
         results = []
         
         if field == "id":
-            # جستجو بر اساس ID (کلید دیکشنری)
+            
             incident = self.data_file.get(str(value))
             if incident:
                 results.append(incident)
         else:
-            # جستجو بر اساس یه فیلد داخل هر incident
+            
             for inc_id, inc_data in self.data_file.items():
                 if inc_data.get(field, "").lower() == value.lower():
                     results.append(inc_data)
@@ -69,9 +78,14 @@ class incident_manager:
     
     
     def delete_incident(self,id):
-        del self.data_file[id]
-        self.save_to_file()
-        return "sucssesful delete"
+        try:
+            del self.data_file[id]
+        except KeyError:
+                print(f"the {id} not found in database incident")
+                print(f"all of the id :{self.data_file.keys()}")
+        else:
+                self.save_to_file()
+                return "successful delete"
     
     
     
@@ -117,7 +131,6 @@ class incident_manager:
             self.save_to_file()
             return"successful change"
         
-
         elif choice==4:
             self.data_file[selected_id]["severity"]="Critical"
             self.save_to_file()
@@ -146,59 +159,86 @@ while True:
 6. Delete Incident
 7. Exit
           ''')
-    
-    entry_number=int(input("Choose an option:"))
-    if entry_number==1:
-         print(manager.add_incident())
-    elif entry_number==2:
-        print(manager.show_all_incidents())
-    elif entry_number==3:#با کمک دیپ سیک
-        
-        print("""
-        Search by:
-        1. ID
-        2. Type
-        3. Severity
-        4. Status
-        """)
-        choice = input("Choose field: ").strip()
-        
-        if choice == "1":
-            value = input("Enter ID: ").strip()
-            results = manager.search("id", value)
-        elif choice == "2":
-            print("Type options: [Phishing, Malware, Brute Force, Unauthorized Access, Suspicious Login, Vulnerability, Other]")
-            value = input("Enter type: ").strip()
-            results = manager.search("type", value)
-        elif choice == "3":
-            print("Severity options: [Low, Medium, High, Critical]")
-            value = input("Enter severity: ").strip()
-            results = manager.search("severity", value)
-        elif choice == "4":
-            print("Status options: [Open, In Progress, Resolved, Closed]")
-            value = input("Enter status: ").strip()
-            results = manager.search("status", value)
-        else:
-            print("Invalid choice")
-            results = []
-        
-        if not results:
-            print("No incidents found.")
-        else:
-            print(f"\nFound {len(results)} incident(s):\n")
-            for inc in results:
-                print(json.dumps(inc, indent=4, ensure_ascii=False))
-                print("-" * 40)
-    elif entry_number==4:
-        id=input("enter id :")
-        option=int(input("Status options: [1:Open, 2:In Progress, 3:Resolved,4: Closed]\n number:"))
-        print(manager.Change_Incident_Status(selected_id=id,choice=option))
-    elif entry_number==5:
-        id=input("enter id :")
-        option=int(input("Severity options: [1:Low,2: Medium,3: High,4: Critical]\n number:"))
-        print(manager.Change_Incident_Severity(selected_id=id,choice=option))
-    elif entry_number==6:
-        manager.delete_incident(input("select id for delete:\n"))
-    elif entry_number==7:
-        print("goodbay")
-        break
+    try:
+        entry_number=int(input("Choose an option:"))
+        if entry_number==1:
+            print(manager.add_incident())
+        elif entry_number==2:
+            print(manager.show_all_incidents())
+        elif entry_number==3:
+            
+            print("""
+            Search by:
+            1. ID
+            2. Type
+            3. Severity
+            4. Status
+            """)
+            try:
+                choice = int(input("Choose field: ").strip())
+            except ValueError :
+                print("error:Please enter a number")
+            else:
+                if choice == 1:
+                        value = input("Enter ID: ").strip()
+                        results = manager.search("id", value)
+                elif choice == 2:
+                        print("Type options: [Phishing, Malware, Brute Force, Unauthorized Access, Suspicious Login, Vulnerability, Other]")
+                        value = input("Enter type: ").strip()
+                        results = manager.search("type", value)
+                elif choice == 3:
+                        print("Severity options: [Low, Medium, High, Critical]")
+                        value = input("Enter severity: ").strip()
+                        results = manager.search("severity", value)
+                elif choice == 4:
+                        print("Status options: [Open, In Progress, Resolved, Closed]")
+                        value = input("Enter status: ").strip()
+                        results = manager.search("status", value)
+                else:
+                        print("Invalid choice")
+                        results = []
+            
+            
+                if not results:
+                    print("No incidents found.")
+                else:
+                    print(f"\nFound {len(results)} incident(s):\n")
+                    for inc in results:
+                        print(json.dumps(inc, indent=4, ensure_ascii=False))
+                        print("-" * 40)
+        elif entry_number==4:
+            try:
+                id=int(input("enter id :"))
+            except ValueError:
+                print("Please enter the correct ID.")
+            else:
+                try:
+                    option=int(input("Status options: [1:Open, 2:In Progress, 3:Resolved,4: Closed]\n number:"))
+                except ValueError:
+                    print("please enter the correct number")
+                else:
+                    id=str(id)
+                    print(manager.Change_Incident_Status(selected_id=id,choice=option))
+                
+        elif entry_number==5:
+            try:
+                id=int(input("enter id :"))
+            except ValueError:
+                print("Please enter the correct ID.")
+            else:
+                try:
+                    option=int(input("Severity options: [1:Low,2: Medium,3: High,4: Critical]\n number:"))
+               
+                except ValueError:
+                        print("please enter the correct number")
+                else:
+                    id=str(id)    
+                    print(manager.Change_Incident_Severity(selected_id=id,choice=option))
+        elif entry_number==6:
+            
+            manager.delete_incident(input("select id for delete:\n"))
+        elif entry_number==7:
+            print("goodbay")
+            break
+    except ValueError :
+                print("error:Please enter a number")

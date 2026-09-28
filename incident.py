@@ -15,7 +15,7 @@ class Incident:
         self.reporter=reporter
         self.description=description
     def to_dict(self):
-        return {"name": self.id,
+        return {"id": self.id,
                 "title":self.title ,
                 "type":self.type,
                 "severity":self.severity,
